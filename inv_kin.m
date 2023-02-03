@@ -46,11 +46,19 @@ classdef inv_kin
             posY1=cos(theta1rad)*obj.L1;
             
             %posição em x
-            posX2 = sin(theta1rad)*obj.L1 - sin(theta2rad-theta1rad)*obj.L2;
+            posX2= sin(theta1rad)*obj.L1 - sin(theta2rad-theta1rad)*obj.L2;
             posX1= sin(theta1rad)*obj.L1;
+            obj.desenha(posX1,posY1,posX2,posY2,janela)
+
+        end
+        function saida=desenha(obj, X1, Y1, X2,Y2,janela)
+            pause(.10);
+            clf(janela);
             figure(janela);
-            line([0 posX1 posX2],[0 -posY1 -posY2]);
-            axis equal;
+            line([0 X1 X2],[0 -Y1 -Y2]);
+            ylim([-120 0])
+            xlim([-60 60])
+%             axis equal;
             grid;
         end
     end
