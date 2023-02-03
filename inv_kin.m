@@ -15,11 +15,11 @@ classdef inv_kin
             obj.atual_x=atual_x;
             obj.atual_y=atual_y;
         end
-        function ang = calc_ang(obj,x,y)
+        function ang = calc_ang(obj,x,y,janela)
             %cinemática inversa
             %x e y são representa a posição em relação ao ombro do robô
             theta2rad = acos((x^2+y^2-obj.L1^2-obj.L2^2)/(2*obj.L1*obj.L2));
-            theta1rad = atan(y/x)-atan(obj.L2*sin(theta2rad)/(obj.L1+obj.L2*cos(theta2rad)));
+            theta1rad = atan2(y,x)-atan2(obj.L2*sin(theta2rad),(obj.L1+obj.L2*cos(theta2rad)));
             if (theta1rad>pi)
                 theta1rad = theta1rad-pi;
             end
@@ -28,6 +28,7 @@ classdef inv_kin
             end
             ang.motor1 = 90-(theta1rad*180/pi);
             ang.motor2 = 90-(theta2rad*180/pi);
+            obj.calc_pos(ang.motor1,ang.motor2,janela);
         end
         function pos = calc_pos(obj,angmotor1,angmotor2,janela)
             %cinemática direta
@@ -49,6 +50,7 @@ classdef inv_kin
             posX1= sin(theta1rad)*obj.L1;
             figure(janela);
             line([0 posX1 posX2],[0 -posY1 -posY2]);
+            axis equal;
             grid;
         end
     end
